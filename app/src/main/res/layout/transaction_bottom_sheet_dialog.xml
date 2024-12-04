@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_sheet_corners"
+    android:id="@+id/transaction_bottom_layout"
+    >
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
+        android:id="@+id/tab_bar"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tab_categories"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/fill_round_btn"
+            android:text="Expense"
+            android:layout_marginEnd="5dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tab_transaction"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/outline_round_btn"
+            android:text="Income"
+            />
+
+    </LinearLayout>
+
+   <androidx.appcompat.widget.AppCompatEditText
+       android:id="@+id/bottom_sheet_edit1"
+       android:layout_margin="10dp"
+       android:hint="enter amount"
+       android:textAlignment="center"
+       android:inputType="numberDecimal"
+       android:fontFamily="@font/baloo_bhai_2_medium"
+       android:textSize="20sp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="Categories"
+        android:textColor="@color/primary_dark_black_dark_1"
+        android:fontFamily="@font/baloo_bhai_2_medium"
+        />
+
+</LinearLayout>

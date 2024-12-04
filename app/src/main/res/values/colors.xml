@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--app colors-->
+    <color name="primary_dark_black">#111827</color>
+
+    <!-- Lighter Shades -->
+    <color name="primary_dark_black_light_1">#1E293B</color>
+    <color name="primary_dark_black_light_2">#374151</color>
+    <color name="primary_dark_black_light_3">#4B5563</color>
+    <color name="primary_dark_black_light_4">#6B7280</color>
+
+    <!-- Darker Shades -->
+    <color name="primary_dark_black_dark_1">#0F172A</color>
+    <color name="primary_dark_black_dark_2">#0D1118</color>
+    <color name="primary_dark_black_dark_3">#0B0F15</color>
+    <color name="primary_dark_black_dark_4">#090D13</color>
+
+
+</resources>
