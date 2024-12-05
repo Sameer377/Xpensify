@@ -136,9 +136,27 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        />
+
+        >
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/nav_header"/>
+                <include layout="@layout/nav_drawer_items" />
+            </LinearLayout>
+        </ScrollView>
+
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

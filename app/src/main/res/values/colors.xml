@@ -18,5 +18,9 @@
     <color name="primary_dark_black_dark_3">#0B0F15</color>
     <color name="primary_dark_black_dark_4">#090D13</color>
 
+    <!--light colors-->
+
+    <color name="list_black1">#666666</color>
+    <color name="list_black2">#424141</color>
 
 </resources>
