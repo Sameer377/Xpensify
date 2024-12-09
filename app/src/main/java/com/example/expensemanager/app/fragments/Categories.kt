@@ -1,60 +1,74 @@
 package com.example.expensemanager.app.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.expensemanager.app.R
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Categories.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Categories : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var pieChart: PieChart
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        val view = inflater.inflate(R.layout.fragment_categories, container, false)
+
+        // Initialize the PieChart
+        pieChart = view.findViewById(R.id.pieChart)
+        setupPieChart()
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Categories.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Categories().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setupPieChart() {
+        // Sample data
+        val entries = listOf(
+            PieEntry(40f, "Food"),
+            PieEntry(20f, "Rent"),
+            PieEntry(15f, "Transport"),
+            PieEntry(25f, "Others")
+        )
+
+        // Configure PieDataSet
+        val dataSet = PieDataSet(entries, "Expense Categories").apply {
+            colors = listOf(
+                Color.rgb(244, 67, 54), // Red
+                Color.rgb(33, 150, 243), // Blue
+                Color.rgb(76, 175, 80), // Green
+                Color.rgb(255, 193, 7)  // Yellow
+            )
+            valueTextSize = 12f
+            valueTextColor = Color.WHITE
+        }
+
+        // Set data to the PieChart
+        val pieData = PieData(dataSet)
+        pieChart.data = pieData
+
+        // Configure PieChart appearance
+        pieChart.apply {
+            description.isEnabled = false
+            isDrawHoleEnabled = true
+            setHoleColor(Color.WHITE)
+            holeRadius = 58f
+            transparentCircleRadius = 59f
+            centerText = "Expenses"
+            setCenterTextSize(10f)
+            animateY(1000)
+            pieChart.legend.textSize=8f
+        }
+
+        // Refresh the chart
+        pieChart.invalidate()
     }
 }

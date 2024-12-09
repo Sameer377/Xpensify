@@ -5,17 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Categories">
 
+    <ImageView
+        android:layout_margin="20dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/filter"
+        android:layout_alignParentRight="true"
+        android:scaleX="-1"
+        />
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
 
 
 
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categories"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/baloo_bhai_2_medium"
-        android:layout_centerInParent="true"/>
-
+    </RelativeLayout>
 </RelativeLayout>
