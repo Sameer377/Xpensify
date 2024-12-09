@@ -6,26 +6,94 @@
     tools:context=".fragments.Categories">
 
     <ImageView
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:src="@drawable/filter"
         android:layout_alignParentRight="true"
         android:scaleX="-1"
         />
+
+    <TextView
+        android:id="@+id/day_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:fontFamily="@font/baloo_bhai_2_medium"
+        android:textColor="@color/primary_dark_black_dark_1"
+        android:text="20 December"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:fontFamily="@font/baloo_bhai_2_medium"
+        android:textColor="@color/primary_dark_black_dark_1"
+        android:text="2024"
+        android:layout_below="@id/day_month"
+        android:layout_marginLeft="15dp"/>
+
+
+
     <RelativeLayout
+        android:id="@+id/pie_rel"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="270dp">
 
 
+        <ImageView
+            android:id="@+id/gifImageView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/anim_logo"
+            android:elevation="2dp"
+            android:layout_centerInParent="true"
+            />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="263dp" />
 
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_below="@id/pie_rel"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/expense_back"
+            android:layout_marginRight="5dp"
+            >
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/income_back"
+            >
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>
