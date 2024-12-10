@@ -44,27 +44,7 @@
 
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edt_layout"
-        android:layout_margin="10dp"
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Category Name"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/primary_dark_black_dark_1"
-        app:hintTextColor="@color/primary_dark_black_dark_1">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/category_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="@color/primary_dark_black_dark_1"
-            android:padding="10dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
 
@@ -76,7 +56,7 @@
         android:layout_marginEnd="10dp"
         android:orientation="horizontal"
         android:weightSum="2"
-        android:layout_below="@id/edt_layout"
+        android:layout_below="@id/toolbar"
         android:layout_width="200dp"
         android:layout_height="30dp">
 
@@ -102,12 +82,35 @@
 
     </LinearLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edt_layout"
+        android:layout_margin="10dp"
+        android:layout_below="@id/tab_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category Name"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/primary_dark_black_dark_1"
+        app:hintTextColor="@color/primary_dark_black_dark_1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/primary_dark_black_dark_1"
+            android:padding="10dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/create_category_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Create"
         style="@style/fill_round_btn"
-        android:layout_below="@id/tab_bar"
+        android:layout_below="@id/edt_layout"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

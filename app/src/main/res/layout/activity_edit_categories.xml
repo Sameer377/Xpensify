@@ -73,6 +73,19 @@
 
     </LinearLayout>
 
+    <ListView
+        android:layout_marginTop="20dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/tab_bar"
+        android:id="@+id/ExpenseCategoryListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:footerDividersEnabled="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/categories_float_btn"
         android:layout_width="wrap_content"

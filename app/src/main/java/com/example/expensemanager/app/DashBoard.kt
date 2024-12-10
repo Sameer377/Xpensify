@@ -14,6 +14,8 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.expensemanager.app.database.AppDatabase
+import com.example.expensemanager.app.database.Category
 import com.example.expensemanager.app.dialogs.TransactionBottomSheet
 import com.example.expensemanager.app.fragments.Categories
 import com.example.expensemanager.app.fragments.Transactions
@@ -22,6 +24,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 
 class DashBoard : AppCompatActivity() {
@@ -55,8 +62,32 @@ class DashBoard : AppCompatActivity() {
         transaction = findViewById<AppCompatButton>(R.id.tab_transaction)
         floatingActionButton = findViewById<FloatingActionButton>(R.id.dash_floating_btn);
 
+        initCategories()
+
         changeToCategories()
     }
+
+    private fun initCategories() {
+        AppDatabase.getDatabase(this)
+        fetchAndDisplayCategories()
+    }
+
+    private fun fetchAndDisplayCategories() {
+        // Launch a coroutine on the IO thread to fetch data
+        CoroutineScope(Dispatchers.IO).launch {
+            val categoryDao = AppDatabase.getDatabase(baseContext ).categoryDao()
+            val categories = categoryDao.getAllCategories()
+
+            // Prepare the data to show in the Toast
+            val categoryNames = categories.joinToString { it.name }
+
+            // Switch to the main thread to show the Toast
+            withContext(Dispatchers.Main) {
+                Toast.makeText(baseContext, "Categories: $categoryNames", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
 
     private fun initListener() {
 

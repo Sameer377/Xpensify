@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Categories">
 
     <ImageView
+        android:id="@+id/filter_menu"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:layout_width="28dp"
@@ -48,13 +50,26 @@
         android:layout_height="270dp">
 
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/gifImageView"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:src="@drawable/anim_logo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/asset_allocation_unscreen"
             android:elevation="2dp"
             android:layout_centerInParent="true"
+            />-->
+
+        <TextView
+            android:elevation="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+20000\n-1200"
+            android:textAlignment="center"
+            android:fontFamily="@font/baloo_bhai_2_medium"
+            android:textColor="@color/primary_dark_black_light_1"
+            android:textSize="18dp"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
             />
 
         <com.github.mikephil.charting.charts.PieChart
@@ -64,36 +79,21 @@
 
     </RelativeLayout>
 
-
-    <LinearLayout
+    <ListView
         android:layout_margin="10dp"
         android:layout_below="@id/pie_rel"
-        android:orientation="horizontal"
-        android:weightSum="2"
+        android:id="@+id/categoryListView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        >
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:footerDividersEnabled="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+         />
 
-        <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/expense_back"
-            android:layout_marginRight="5dp"
-            >
 
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/income_back"
-            >
 
-        </RelativeLayout>
 
-    </LinearLayout>
 
 </RelativeLayout>
