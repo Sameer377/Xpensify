@@ -59,4 +59,11 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 
+    /*icon picker*/
+
+    implementation ("com.maltaisn:icondialog:3.3.0")
+    implementation ("com.maltaisn:iconpack-default:1.1.0")
+
+
+
 }
