@@ -70,5 +70,9 @@ class EditCategories : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadCategories()
+    }
 
 }

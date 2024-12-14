@@ -64,6 +64,6 @@ dependencies {
     implementation ("com.maltaisn:icondialog:3.3.0")
     implementation ("com.maltaisn:iconpack-default:1.1.0")
 
-
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
 }

@@ -1,17 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:orientation="vertical"
     tools:context=".fragments.Transactions">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="transaction"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/baloo_bhai_2_medium"
-        android:layout_centerInParent="true"/>
-</RelativeLayout>
+
+
+
+
+
+
+
+    <androidx.cardview.widget.CardView
+       android:layout_width="match_parent"
+       android:layout_height="180dp"
+       app:cardBackgroundColor="@color/primary_dark_black_dark_1"
+       app:cardCornerRadius="15dp"
+       >
+    <RelativeLayout
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/baseline_account_balance_wallet_24"
+            android:id="@+id/total_ex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/baloo_bhai_2_medium"
+            android:text="Total Balence"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_marginLeft="30dp"
+            android:id="@+id/balance_ammount"
+            android:layout_below="@id/total_ex"
+            android:gravity="center"
+            android:drawableLeft="@drawable/baseline_currency_rupee_24"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:text="3,000.00"
+            android:letterSpacing="0.05"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+
+
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/transaction_down"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/baloo_bhai_2_medium"
+                    android:gravity="center"
+                    android:text="Income"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/total_ex"
+                    android:layout_marginLeft="24dp"
+                    android:gravity="center"
+                    android:drawableLeft="@drawable/baseline_currency_rupee_24"
+
+                    android:fontFamily="@font/inter_bold"
+                    android:letterSpacing="0.05"
+                    android:text="3,000.00"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:drawableLeft="@drawable/transaction_up"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/baloo_bhai_2_medium"
+                    android:text="Expense"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_marginLeft="24dp"
+                    android:layout_below="@id/total_ex"
+                    android:gravity="center"
+                    android:drawableLeft="@drawable/baseline_currency_rupee_24"
+                    android:textSize="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="3,000.00"
+                    android:letterSpacing="0.05"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+   </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:gravity="center"
+            android:textSize="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/baloo_bhai_2_medium"
+            android:layout_marginLeft="10dp"
+            android:text="12 Dec 2024"
+            android:textColor="@color/primary_dark_black_dark_1" />
+
+        <ImageView
+            android:id="@+id/filter_menu"
+            android:layout_marginRight="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/filter"
+            android:layout_alignParentRight="true"
+            android:scaleX="-1"
+            />
+
+    </RelativeLayout>
+
+    <include layout="@layout/transaction_item"/>
+    <include layout="@layout/transaction_item"/>
+    <include layout="@layout/transaction_item"/>
+    <include layout="@layout/transaction_item"/>
+    <include layout="@layout/transaction_item"/>
+
+</LinearLayout>

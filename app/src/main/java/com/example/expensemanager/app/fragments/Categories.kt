@@ -137,4 +137,9 @@ class Categories : Fragment() {
 
         pieChart.invalidate()
     }
+
+    override fun onResume() {
+        super.onResume()
+        loadCategories()
+    }
 }

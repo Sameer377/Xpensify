@@ -42,41 +42,12 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/tab_bar"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="30dp">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/fill_round_btn"
-            android:text="Expense"
-            android:layout_marginEnd="5dp"
-            />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/outline_round_btn"
-            android:text="Income"
-
-            />
-
-    </LinearLayout>
 
     <ListView
         android:layout_marginTop="20dp"
         android:layout_margin="10dp"
-        android:layout_below="@id/tab_bar"
+        android:layout_below="@id/toolbar"
         android:id="@+id/ExpenseCategoryListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

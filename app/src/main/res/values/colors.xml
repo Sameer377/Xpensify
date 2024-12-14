@@ -23,4 +23,8 @@
     <color name="list_black1">#666666</color>
     <color name="list_black2">#424141</color>
 
+<!--    income expense color-->
+    <color name="income">#59954D</color>
+    <color name="expense">#522A33</color>
+
 </resources>

@@ -64,7 +64,7 @@ class DashBoard : AppCompatActivity() {
 
         initCategories()
 
-        changeToCategories()
+        changeToTransactions()
     }
 
     private fun initCategories() {
