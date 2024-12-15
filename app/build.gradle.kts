@@ -39,6 +39,8 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.gms:play-services-ads:22.4.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -65,5 +67,8 @@ dependencies {
     implementation ("com.maltaisn:iconpack-default:1.1.0")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+    //noinspection RiskyLibrary
+
 
 }

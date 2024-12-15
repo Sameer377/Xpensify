@@ -2,8 +2,10 @@ package com.example.expensemanager.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +21,8 @@ import com.example.expensemanager.app.database.Category
 import com.example.expensemanager.app.dialogs.TransactionBottomSheet
 import com.example.expensemanager.app.fragments.Categories
 import com.example.expensemanager.app.fragments.Transactions
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -29,9 +33,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.RequestConfiguration
+import kotlin.math.log
 
 
-class DashBoard : AppCompatActivity() {
+class DashBoard : AppCompatActivity()   {
 
     // Declare BottomNavigationView as a global variable
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -39,7 +49,7 @@ class DashBoard : AppCompatActivity() {
     private lateinit var transaction: AppCompatButton
     private lateinit var floatingActionButton:  FloatingActionButton
 
-
+    private  var adflag : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +62,14 @@ class DashBoard : AppCompatActivity() {
             insets
         }
 
+
+
         initUi()
         initListener()
     }
 
     private fun initUi() {
-
+        adflag = 0
         categories = findViewById<AppCompatButton>(R.id.tab_categories)
         transaction = findViewById<AppCompatButton>(R.id.tab_transaction)
         floatingActionButton = findViewById<FloatingActionButton>(R.id.dash_floating_btn);
@@ -65,6 +77,7 @@ class DashBoard : AppCompatActivity() {
         initCategories()
 
         changeToTransactions()
+
     }
 
     private fun initCategories() {
@@ -92,9 +105,26 @@ class DashBoard : AppCompatActivity() {
     private fun initListener() {
 
 
+        val sharedPreferenceManger = SharedPreferenceManger(this)
+        getRewardedCoin(sharedPreferenceManger.totalRewardedAmount)
+        val myRewardedAds = MyRewardedAds(this)
+        myRewardedAds.loadRewardedAds(R.string.rewarded_ads)
+
+        var flagAd : Int = 0
+
         categories.setOnClickListener{
+
+            if(flagAd==0){
+                flagAd++
+                myRewardedAds.showRewardedAds(R.string.rewarded_ads){
+                    val rewardedCoin = it.amount
+                    sharedPreferenceManger.totalRewardedAmount += rewardedCoin
+                    getRewardedCoin(sharedPreferenceManger.totalRewardedAmount)
+                }
+            }
+
             changeToCategories()
-            Toast.makeText(this,"add",Toast.LENGTH_SHORT).show()
+
         }
 
         transaction.setOnClickListener{
@@ -120,6 +150,8 @@ class DashBoard : AppCompatActivity() {
 
     }
 
+
+
     public fun changeToCategories(){
        categories.setBackgroundResource(R.drawable.filled_btn_rounded);
         categories .setTextColor(ContextCompat.getColor(this, R.color.white))
@@ -142,6 +174,10 @@ class DashBoard : AppCompatActivity() {
         fragmentTransaction.addToBackStack(null)
 
         fragmentTransaction.commit()
+
+
+//            showAds()
+
     }
 
     public fun changeToTransactions(){
@@ -172,5 +208,43 @@ class DashBoard : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    /*public fun showAds() {
+        val adRequest = AdRequest.Builder().build()
+        var mInterstitialAd: InterstitialAd? = null
+
+        InterstitialAd.load(
+            this,
+            "ca-app-pub-9253311157837179/1114277327",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                    println("Ad successfully loaded!")
+
+                    mInterstitialAd?.show(this@DashBoard)
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    println("Ad failed to load: ${error.message}")
+                }
+            }
+        )
+
+        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                println("Ad dismissed.")
+                mInterstitialAd = null
+            }
+
+            override fun onAdFailedToShowFullScreenContent(error: AdError) {
+                println("Ad failed to show: ${error.message}")
+                mInterstitialAd = null
+            }
+        }
+    }*/
+
+    private fun getRewardedCoin(totalRewardedAmount: Int){
+        Toast.makeText(this@DashBoard,"Total Rewarded Coins: $totalRewardedAmount Coins",Toast.LENGTH_LONG).show()
+    }
 
 }
