@@ -1,59 +1,112 @@
 package com.example.expensemanager.app.fragments
 
+import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.expensemanager.app.R
+import com.example.expensemanager.app.adapters.TransactionAdapter
+import com.example.expensemanager.app.database.AppDatabase
+import com.example.expensemanager.app.database.Transaction
+import com.example.expensemanager.app.database.TransactionRepository
+import com.example.expensemanager.app.database.TransactionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Transactions.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class Transactions : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+
+    private lateinit var balanceTv: TextView
+    private lateinit var income: TextView
+    private lateinit var expense: TextView
+    private lateinit var viewModel: TransactionViewModel
+    private lateinit var transactionAdapter: TransactionAdapter
+    private lateinit var  recyclerView: RecyclerView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
+
+    private lateinit var view  :  View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_transactions, container, false)
+       val v:View =   inflater.inflate(R.layout.fragment_transactions, container, false)
+
+        expense = v.findViewById<TextView>(R.id.expense_transaction_card)
+        balanceTv = v.findViewById<TextView>(R.id.balance_transaction_card)
+        income = v.findViewById<TextView>(R.id.income_transaction_card)
+        recyclerView = v.findViewById(R.id.recyclerView_transaction)
+        initUi()
+        view=v
+        return v
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Transactions.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Transactions().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun initUi() {
+
+        var balance : Double = 0.0
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val totalIncome = context?.let { AppDatabase.getDatabase(it).incomeDao().getTotalIncome() }
+            CoroutineScope(Dispatchers.Main).launch {
+                if (totalIncome != null) {
+                   income.text = totalIncome.toString()
+                   balance=balance+totalIncome.toDouble()
+
+
                 }
             }
+
+            val totalExpense = context?.let { AppDatabase.getDatabase(it).expenseDao().getTotalExpenses() }
+            CoroutineScope(Dispatchers.Main).launch {
+                if (totalExpense != null) {
+                    expense.text = totalExpense.toString()
+                    balance=balance-totalExpense.toDouble()
+
+                    balanceTv.text = balance.toString()
+                }
+            }
+        }
+
+
+
+        viewModel = ViewModelProvider(this)[TransactionViewModel::class.java]
+
+        // Setup RecyclerView
+
+        transactionAdapter = TransactionAdapter(requireContext(),emptyList())
+        recyclerView.adapter = transactionAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // Observe data from ViewModel
+        viewModel.transactions.observe(viewLifecycleOwner) { transactions ->
+            transactionAdapter.updateData(transactions)
+        }
+
+        // Fetch transactions
+        viewModel.fetchTransactions()
+
     }
+
+
+
 }

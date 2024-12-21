@@ -3,6 +3,7 @@ package com.example.expensemanager.app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -41,7 +42,20 @@ import com.google.android.gms.ads.RequestConfiguration
 import kotlin.math.log
 
 
-class DashBoard : AppCompatActivity()   {
+
+
+
+
+
+
+
+interface TransactionBottomSheetListener {
+    fun onBottomSheetClosed()
+}
+
+
+
+class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
 
     // Declare BottomNavigationView as a global variable
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -246,5 +260,12 @@ class DashBoard : AppCompatActivity()   {
     private fun getRewardedCoin(totalRewardedAmount: Int){
         Toast.makeText(this@DashBoard,"Total Rewarded Coins: $totalRewardedAmount Coins",Toast.LENGTH_LONG).show()
     }
+
+    override fun onBottomSheetClosed() {
+        changeToTransactions()
+        Toast.makeText(this, "BottomSheet Closed", Toast.LENGTH_SHORT).show()
+        // Add your logic here
+    }
+
 
 }

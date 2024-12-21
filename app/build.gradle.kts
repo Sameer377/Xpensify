@@ -63,12 +63,12 @@ dependencies {
 
     /*icon picker*/
 
-    implementation ("com.maltaisn:icondialog:3.3.0")
+    implementation ("com.maltaisn:icondialog:3.2.0")
     implementation ("com.maltaisn:iconpack-default:1.1.0")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
 
     //noinspection RiskyLibrary
-
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
 }

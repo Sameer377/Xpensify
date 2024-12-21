@@ -9,11 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Category::class, Income::class], version = 1, exportSchema = false)
+@Database(entities = [Category::class, Income::class,Expense::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
     abstract fun incomeDao(): IncomeDao
+    abstract fun expenseDao(): ExpenseDao
+    abstract fun transactionDao(): TransactionDao
 
     companion object {
         @Volatile
@@ -45,21 +47,27 @@ abstract class AppDatabase : RoomDatabase() {
                 // Insert default categories
                 getDatabase(context).categoryDao().insertCategories(defaultCategories)
 
-                // Insert default income
-                getDatabase(context).incomeDao().insertIncome(defaultIncome)
+//                // Insert default income
+//                getDatabase(context).incomeDao().insertIncome(defaultIncome)
+//                getDatabase(context).expenseDao().insertExpense(defaultExpense)
+
             }
         }
     }
 }
 
 val defaultCategories = listOf(
-    Category(name = "Home", icon = "home_icon", color = "#FF5733"),
-    Category(name = "Entertainment", icon = "entertainment_icon", color = "#2196F3"),
-    Category(name = "Traveling", icon = "travel_icon", color = "#4CAF50"),
-    Category(name = "Clothes", icon = "clothes_icon", color = "#FFC107"),
-    Category(name = "Sports", icon = "sports_icon", color = "#9C27B0")
+    Category(name = "Others", icon = 0, color = "#FF5733"),
+    Category(name = "Home", icon = 0, color = "#FF5733"),
+    Category(name = "Entertainment", icon = 0, color = "#2196F3"),
+    Category(name = "Traveling", icon = 0, color = "#4CAF50"),
+    Category(name = "Clothes", icon = 0, color = "#FFC107"),
+    Category(name = "Sports", icon =0, color = "#9C27B0")
 )
 
-val defaultIncome = listOf(
-    Income(amount = 0.0, date = "12 Dec 2024", source = "Salary", description = "Received salary from boss")
-)
+//val defaultIncome = listOf(
+//    Income(amount = 0.0, date = "2024-12-12" ,time="12:30:30", source = "Salary", description = "Received salary from boss")
+//)
+//val defaultExpense = listOf(
+//    Expense(amount = 0.0, date = "2024-12-12" ,time="12:30:30", category_id = 1)
+//)

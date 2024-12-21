@@ -47,47 +47,11 @@
 
 
     <LinearLayout
-
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-
-        android:id="@+id/tab_bar"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_below="@id/toolbar"
-        android:layout_width="200dp"
-        android:layout_height="30dp">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/tab_categories"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/fill_round_btn"
-            android:text="Expense"
-            android:layout_marginEnd="5dp"
-            />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/tab_transaction"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/outline_round_btn"
-            android:text="Income"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/lin_edt"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tab_bar"
+        android:layout_below="@id/toolbar"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -101,6 +65,7 @@
             android:id="@+id/icon_btn"
             >
             <ImageView
+                android:id="@+id/selected_icon"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/ic_home"

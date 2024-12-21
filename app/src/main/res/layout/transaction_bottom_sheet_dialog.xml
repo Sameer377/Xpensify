@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/bottom_sheet_corners"
     android:id="@+id/transaction_bottom_layout"
@@ -44,14 +44,26 @@
 
     </LinearLayout>
 
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/source"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:hint="Enter Source"
+        android:fontFamily="@font/baloo_bhai_2_medium"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
    <androidx.appcompat.widget.AppCompatEditText
        android:id="@+id/bottom_sheet_amount"
        android:layout_margin="10dp"
-       android:hint="enter amount"
-       android:textAlignment="center"
+       android:hint="Enter amount"
        android:inputType="numberDecimal"
        android:fontFamily="@font/baloo_bhai_2_medium"
-       android:textSize="20sp"
+       android:textSize="16sp"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>
 
@@ -65,6 +77,18 @@
         android:padding="10dp"
         android:scrollbars="none" />
 
-
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/add_bottom_sheet_btn"
+        android:layout_width="120dp"
+        android:layout_gravity="right"
+        android:layout_height="40dp"
+        android:background="@drawable/add_btn_bg"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Add"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:fontFamily="@font/baloo_bhai_2_medium"
+        />
 
 </LinearLayout>

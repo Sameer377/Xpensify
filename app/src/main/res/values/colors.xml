@@ -27,4 +27,8 @@
     <color name="income">#59954D</color>
     <color name="expense">#522A33</color>
 
+    <!--    income expense color-->
+    <color name="income_ammount">#59954D</color>
+    <color name="expense_amount">#C7284C</color>
+
 </resources>

@@ -9,12 +9,6 @@
     tools:context=".fragments.Transactions">
 
 
-
-
-
-
-
-
     <androidx.cardview.widget.CardView
        android:layout_width="match_parent"
        android:layout_height="180dp"
@@ -38,8 +32,9 @@
             android:textColor="@color/white" />
 
         <TextView
+
             android:layout_marginLeft="30dp"
-            android:id="@+id/balance_ammount"
+            android:id="@+id/balance_transaction_card"
             android:layout_below="@id/total_ex"
             android:gravity="center"
             android:drawableLeft="@drawable/baseline_currency_rupee_24"
@@ -60,6 +55,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:minWidth="120dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
@@ -82,10 +78,10 @@
                     android:layout_marginLeft="24dp"
                     android:gravity="center"
                     android:drawableLeft="@drawable/baseline_currency_rupee_24"
-
+                    android:id="@+id/income_transaction_card"
                     android:fontFamily="@font/inter_bold"
                     android:letterSpacing="0.05"
-                    android:text="3,000.00"
+                    android:text="0.00"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
 
@@ -109,6 +105,7 @@
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/expense_transaction_card"
                     android:layout_marginLeft="24dp"
                     android:layout_below="@id/total_ex"
                     android:gravity="center"
@@ -117,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_bold"
-                    android:text="3,000.00"
+                    android:text="0.00"
                     android:letterSpacing="0.05"
                     android:textColor="@color/white" />
 
@@ -142,22 +139,23 @@
             android:text="12 Dec 2024"
             android:textColor="@color/primary_dark_black_dark_1" />
 
-        <ImageView
+        <TextView
+            android:textSize="14dp"
+            android:textColor="@color/primary_dark_black_dark_1"
             android:id="@+id/filter_menu"
             android:layout_marginRight="10dp"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@drawable/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See All"
+            android:fontFamily="@font/baloo_bhai_2_medium"
             android:layout_alignParentRight="true"
-            android:scaleX="-1"
             />
 
     </RelativeLayout>
 
-    <include layout="@layout/transaction_item"/>
-    <include layout="@layout/transaction_item"/>
-    <include layout="@layout/transaction_item"/>
-    <include layout="@layout/transaction_item"/>
-    <include layout="@layout/transaction_item"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_transaction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

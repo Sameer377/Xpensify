@@ -11,14 +11,14 @@
         app:cardCornerRadius="10dp"
         app:cardBackgroundColor="#E9EBE9"
         android:layout_margin="10dp"
-        app:cardElevation="0dp"
-        >
+        app:cardElevation="0dp">
+
         <ImageView
+            android:id="@+id/iconImageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_home"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
 
     </androidx.cardview.widget.CardView>
 
@@ -26,9 +26,10 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/sourceOrCategoryText"
             android:gravity="center"
             android:textSize="16dp"
             android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
             android:textColor="@color/primary_dark_black_dark_1" />
 
         <TextView
+            android:id="@+id/dateText"
             android:gravity="center"
             android:textSize="12dp"
             android:layout_width="wrap_content"
@@ -47,14 +49,14 @@
             android:text="12 Dec 2024"
             android:textColor="@color/primary_dark_black_light_3" />
 
-
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <TextView
+            android:id="@+id/amountText"
             android:drawableLeft="@drawable/baseline_currency_rupee_24"
             android:layout_marginRight="10dp"
             android:gravity="center"
