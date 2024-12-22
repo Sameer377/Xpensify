@@ -23,4 +23,12 @@ interface IncomeDao {
 
     @Query("SELECT SUM(amount) FROM income_table")
     suspend fun getTotalIncome(): Double?
+
+    @Query("""  SELECT SUM(amount) FROM income_table
+            WHERE date BETWEEN :startDate AND :endDate""")
+                suspend fun getTotalIncomeInRange(startDate: String, endDate: String): Double?
+
+        @Query("""SELECT SUM(amount) FROM income_table
+                WHERE date = :date""")
+                suspend fun getTotalIncomeOfDate(date: String): Double?
 }

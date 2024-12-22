@@ -31,4 +31,9 @@
     <color name="income_ammount">#59954D</color>
     <color name="expense_amount">#C7284C</color>
 
+    <color name="teal">#40F3F6</color>
+
+    <color name="light_green">#C2DBB2</color>
+    <color name="light_red">#FDC7D2</color>
+
 </resources>

@@ -21,6 +21,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/download_report"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:fontFamily="@font/baloo_bhai_2_medium"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="8dp"
+            android:text="Download report"
+            android:background="@drawable/download_report"
+            android:layout_alignParentRight="true"
+            />
+
         <TextView
             android:drawablePadding="10dp"
             android:drawableLeft="@drawable/baseline_account_balance_wallet_24"
@@ -42,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
-            android:text="3,000.00"
+            android:text="0.00"
             android:letterSpacing="0.05"
             android:textColor="@color/white" />
 
@@ -130,6 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/transactionDate"
             android:gravity="center"
             android:textSize="14dp"
             android:layout_width="wrap_content"
@@ -140,9 +156,10 @@
             android:textColor="@color/primary_dark_black_dark_1" />
 
         <TextView
+
             android:textSize="14dp"
             android:textColor="@color/primary_dark_black_dark_1"
-            android:id="@+id/filter_menu"
+            android:id="@+id/filter_menu_transaction"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

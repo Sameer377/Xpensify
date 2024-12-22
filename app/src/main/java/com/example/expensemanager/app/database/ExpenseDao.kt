@@ -19,4 +19,29 @@ interface ExpenseDao {
 
     @Query("SELECT SUM(amount) FROM expenses")
     suspend fun getTotalExpenses(): Double?
+
+
+    @Query("SELECT * FROM expenses WHERE date = :date")
+    suspend fun getDayTransactions(date: String): List<Expense>
+
+    @Query("""
+        SELECT * FROM expenses
+        WHERE date BETWEEN DATE(:startDate) AND DATE(:endDate)
+    """)
+    suspend fun getWeeklyTransactions(startDate: String, endDate: String): List<Expense>
+
+    @Query("""
+        SELECT * FROM expenses
+        WHERE strftime('%Y', date) = :year
+    """)
+    suspend fun getYearTransactions(year: String): List<Expense>
+
+    @Query("""SELECT SUM(amount) FROM expenses
+            WHERE date BETWEEN :startDate AND :endDate""")
+                suspend fun getTotalExpenseInRange(startDate: String, endDate: String): Double?
+
+        @Query("""SELECT SUM(amount) FROM expenses
+                WHERE date = :date""")
+                suspend fun getTotalExpenseOfDate(date: String): Double?
+
 }

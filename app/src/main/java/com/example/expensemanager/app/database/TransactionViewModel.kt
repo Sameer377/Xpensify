@@ -15,6 +15,7 @@ class TransactionViewModel(application: Application):AndroidViewModel(applicatio
     private val _transactions = MutableLiveData<List<Transaction>>()
     val transactions: LiveData<List<Transaction>> get() = _transactions
 
+
     init {
         val dao = AppDatabase.getDatabase(application).transactionDao()
         repository = TransactionRepository(dao)
@@ -23,6 +24,20 @@ class TransactionViewModel(application: Application):AndroidViewModel(applicatio
     fun fetchTransactions() {
         viewModelScope.launch {
             val data = repository.getAllTransactions()
+            _transactions.postValue(data)
+        }
+    }
+
+    fun fetchDayTransactions(date:String) {
+        viewModelScope.launch {
+            val data = repository.getDayTransactions(date)
+            _transactions.postValue(data)
+        }
+    }
+
+    fun fetchTransactionsInRange(startDate:String,endDate: String) {
+        viewModelScope.launch {
+            val data = repository.getTransactionsInRange(startDate, endDate)
             _transactions.postValue(data)
         }
     }
