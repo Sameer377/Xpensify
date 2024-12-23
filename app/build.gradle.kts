@@ -63,7 +63,7 @@ dependencies {
 
     /*icon picker*/
 
-    implementation ("com.maltaisn:icondialog:3.2.0")
+    implementation ("com.maltaisn:icondialog:3.3.0")
     implementation ("com.maltaisn:iconpack-default:1.1.0")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
@@ -72,5 +72,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     implementation("com.itextpdf:itext7-core:7.2.3")
+
+    implementation("com.github.duanhong169:colorpicker:1.1.6")
 
 }

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_margin="10dp"
     android:layout_marginTop="20dp"
-    android:paddingBottom="10dp"
-    >
+    android:paddingBottom="10dp">
 
-    <ImageView
-        android:id="@+id/item_icons"
+    <androidx.cardview.widget.CardView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_home"
-        android:padding="10dp"
-        android:background="@drawable/income_back"
-        />
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#E9EBE9"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_home"
+            android:layout_gravity="center" />
+
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:paddingLeft="10dp"
@@ -35,6 +44,7 @@
             />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/item_percentage"
@@ -47,18 +57,19 @@
             android:id="@+id/item_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rs. 15000.0"
+            android:text="Rs. 0.0"
             android:fontFamily="@font/baloo_bhai_2_medium"
             android:textSize="14dp"
             android:textColor="@color/primary_dark_black_dark_1"
             />
 
         <TextView
+
             android:layout_below="@id/item_amount"
             android:id="@+id/item_percentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="81%"
+            android:text="0%"
             android:layout_alignParentRight="true"
             android:fontFamily="@font/baloo_bhai_2_medium"
             android:textSize="10dp"

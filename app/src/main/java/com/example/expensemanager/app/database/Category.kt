@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class Category(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val icon: Int? = null,
+    val icon: Int = 957,
     val color: String? = null // Optional field for storing color in HEX format
 )

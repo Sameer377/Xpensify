@@ -48,8 +48,8 @@ abstract class AppDatabase : RoomDatabase() {
                 getDatabase(context).categoryDao().insertCategories(defaultCategories)
 
 //                // Insert default income
-                getDatabase(context).incomeDao().insertIncome(defaultIncome)
-                getDatabase(context).expenseDao().insertExpense(defaultExpense)
+//                getDatabase(context).incomeDao().insertIncome(defaultIncome)
+//                getDatabase(context).expenseDao().insertExpense(defaultExpense)
 
             }
         }
@@ -57,12 +57,12 @@ abstract class AppDatabase : RoomDatabase() {
 }
 
 val defaultCategories = listOf(
-    Category(name = "Others", icon = 0, color = "#FF5733"),
-    Category(name = "Home", icon = 0, color = "#FF5733"),
-    Category(name = "Entertainment", icon = 0, color = "#2196F3"),
-    Category(name = "Traveling", icon = 0, color = "#4CAF50"),
-    Category(name = "Clothes", icon = 0, color = "#FFC107"),
-    Category(name = "Sports", icon =0, color = "#9C27B0")
+    Category(name = "Others", icon = 957, color = "#FF5733"),
+    Category(name = "Home", icon = 471, color = "#FF5733"),
+    Category(name = "Entertainment", icon = 325, color = "#2196F3"),
+    Category(name = "Traveling", icon = 391, color = "#4CAF50"),
+    Category(name = "Books", icon = 116, color = "#FFC107"),
+    Category(name = "Sports", icon =520, color = "#9C27B0")
 )
 val defaultExpense = listOf(
     Expense(amount = 100.0, date = "2024-1-12", time = "12:30:30", category_id = 1),

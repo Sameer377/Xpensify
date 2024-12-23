@@ -44,4 +44,12 @@ interface ExpenseDao {
                 WHERE date = :date""")
                 suspend fun getTotalExpenseOfDate(date: String): Double?
 
+
+    // Function to get total expense for a specific category for all records
+    @Query("SELECT SUM(amount) FROM expenses WHERE category_id = :category")
+    fun getTotalExpenseForCategory(category: Int): Double?
+
+    // Function to get total expense for a specific category between two dates
+    @Query("SELECT SUM(amount) FROM expenses WHERE category_id = :category AND date BETWEEN :startDate AND :endDate")
+    fun getTotalExpenseForCategoryInDateRange(category: Int, startDate: String, endDate: String): Double?
 }

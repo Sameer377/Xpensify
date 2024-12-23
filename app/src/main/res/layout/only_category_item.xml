@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_margin="10dp"
     android:layout_marginTop="20dp"
-    android:paddingBottom="10dp"
     >
 
-    <ImageView
-        android:id="@+id/item_icons"
+    <androidx.cardview.widget.CardView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_home"
-        android:padding="10dp"
-        android:background="@drawable/income_back"
-        />
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#E9EBE9"
+        android:layout_margin="10dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_home"
+            android:layout_gravity="center" />
+
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:paddingLeft="10dp"

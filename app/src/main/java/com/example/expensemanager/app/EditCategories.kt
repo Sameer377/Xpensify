@@ -1,5 +1,6 @@
 package com.example.expensemanager.app
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -46,7 +47,7 @@ class EditCategories : AppCompatActivity() {
 
 
         btn.setOnClickListener{
-           startActivity( Intent(this, NewCategory::class.java))
+           startActivity( Intent(this, AddCategory::class.java))
         }
 
         initUi()

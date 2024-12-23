@@ -62,14 +62,24 @@ class Categories : Fragment() {
 
 
     private fun loadCategories() {
+
         // Use coroutine to fetch data from Room database
         lifecycleScope.launch(Dispatchers.IO) {
+            var totalExpense = context?.let { AppDatabase.getDatabase(it).expenseDao().getTotalExpenses() }
             val categoryDao = AppDatabase.getDatabase(requireContext()).categoryDao()
             val categories = categoryDao.getAllCategories()
 
             withContext(Dispatchers.Main) {
-                val adapter = CategoryAdapter(requireContext(), categories)
-                listView.adapter = adapter
+                if(totalExpense!=null){
+                    val adapter = CategoryAdapter(requireContext(), categories,totalExpense)
+                    listView.adapter = adapter
+                }else{
+                    val t = totalExpense
+                    if(t!=null){
+                        val adapter = CategoryAdapter(requireContext(), categories,t)
+                        listView.adapter = adapter
+                    }
+                }
             }
         }
     }
