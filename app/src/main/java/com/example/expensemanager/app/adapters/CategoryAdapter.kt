@@ -15,6 +15,7 @@ import com.example.expensemanager.app.App
 import com.example.expensemanager.app.R
 import com.example.expensemanager.app.database.AppDatabase
 import com.example.expensemanager.app.database.Category
+import com.example.expensemanager.app.database.CategoryData
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.data.Icon
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 
 class CategoryAdapter(
     private val context: Context,
-    private val categories: List<Category>,
+    private val categories: List<CategoryData>,
     private val totalExpenses:Double
 ) : BaseAdapter()  {
 
@@ -37,7 +38,7 @@ class CategoryAdapter(
 
     override fun getCount(): Int = categories.size
 
-    override fun getItem(position: Int): Category = categories[position]
+    override fun getItem(position: Int): CategoryData = categories[position]
 
     override fun getItemId(position: Int): Long = categories[position].id.toLong()
 
@@ -54,20 +55,20 @@ class CategoryAdapter(
         val item_percentage = view.findViewById<TextView>(R.id.item_percentage)
         val iconImageView = view.findViewById<ImageView>(R.id.iconImageView)
         val progress = view.findViewById<LinearProgressIndicator>(R.id.progress_category)
-
-        nameTextView.text = category.name
+        var percent : Double = 0.0
+        nameTextView.text = category.category_name
         // Set a placeholder icon or fetch from `category.icon` if available
 
         val iconPack = iconDialogIconPack
         if (iconPack != null) {
             try {
                 val loader = IconPackLoader(context)
-                val drawable = iconPack.getIconDrawable(category.icon,loader.drawableLoader )
+                val drawable = iconPack.getIconDrawable(category.categoryIcon,loader.drawableLoader )
                 if (drawable != null) {
-                    iconImageView.setColorFilter(Color.parseColor(category.color ?: "#000000"))
+                    iconImageView.setColorFilter(Color.parseColor(category.categoryColor ?: "#000000"))
                     iconImageView.setImageDrawable(drawable)
                 } else {
-                    Log.w("CategoryAdapter", "Icon not found for ID: ${category.icon}")
+                    Log.w("CategoryAdapter", "Icon not found for ID: ${category.categoryIcon}")
                     iconImageView.setImageResource(R.drawable.ic_home)
                 }
             } catch (e: Exception) {
@@ -79,28 +80,11 @@ class CategoryAdapter(
             iconImageView.setImageResource(R.drawable.ic_home)
         }
 
-
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val totalExpense = context?.let { AppDatabase.getDatabase(it).expenseDao().getTotalExpenseForCategory(category.id) }
-            var percent : Double = 0.0
-
-            CoroutineScope(Dispatchers.Main).launch {
-                if (totalExpense != null) {
-
-                    amountTextView.text = totalExpense.toString()
-                    percent = totalExpense.toDouble() / (totalExpenses / 100)
-                    if(category.color!=null){
-                        progress.setIndicatorColor(Color.parseColor(category.color))
-                    }
+                    amountTextView.text = category.amount.toString()
+                    percent = category.amount.toDouble() / (totalExpenses / 100)
+                    progress.setIndicatorColor(Color.parseColor(category.categoryColor))
                     progress.setProgress(percent.toInt())
                     item_percentage.text = percent.toInt().toString()+"%"
-                }else{
-
-                }
-            }
-
-        }
 
         return view
     }

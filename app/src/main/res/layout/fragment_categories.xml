@@ -18,10 +18,10 @@
         />
 
     <TextView
-        android:id="@+id/day_month"
+        android:id="@+id/date_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:fontFamily="@font/baloo_bhai_2_medium"
         android:textColor="@color/primary_dark_black_dark_1"
         android:text="20 December"
@@ -29,15 +29,7 @@
         android:layout_marginLeft="15dp"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:fontFamily="@font/baloo_bhai_2_medium"
-        android:textColor="@color/primary_dark_black_dark_1"
-        android:text="2024"
-        android:layout_below="@id/day_month"
-        android:layout_marginLeft="15dp"/>
+
 
 
 
@@ -60,6 +52,7 @@
             />-->
 
         <TextView
+            android:id="@+id/inex"
             android:elevation="1dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
