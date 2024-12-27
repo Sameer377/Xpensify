@@ -376,44 +376,44 @@ private val RC_SIGN_IN = 100
 }
 
     //Restoring database to internal storage
-    private fun searchFileInDrive(fileName: String, googleDriveService2: Drive): String? {
-        Looper.prepare()
-        if (googleDriveService2 == null) {
-            Log.e("GoogleDrive", "Google Drive Service not initialized")
-            Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
-
-            return null
-        }
-
-        val query = "name = '$fileName' and mimeType != 'application/vnd.google-apps.folder'"
-
-        return try {
-            val result = googleDriveService2.files().list()
-                .setQ(query)
-                .setSpaces("drive")
-                .setFields("files(id, name)")
-                .execute()
-
-            if (!result.files.isNullOrEmpty()) {
-                if (result != null) {
-                    Log.d("GoogleDrive", "File found: ${result.files[0].name}")
-                    Toast.makeText(applicationContext,"GoogleDrive : File found: ${result.files[0].name}",Toast.LENGTH_SHORT).show()
-
-                }
-                result.files.get(0).id // Return the file ID
-            } else {
-                Log.e("GoogleDrive", "File not found")
-                Toast.makeText(applicationContext,"GoogleDrive : File not found",Toast.LENGTH_SHORT).show()
-
-                null
-            }
-        } catch (e: Exception) {
-            Log.e("GoogleDrive", "Error searching file: ${e.message}")
-            Toast.makeText(applicationContext,"GoogleDrive :Error searching file: ${e.message}",Toast.LENGTH_SHORT).show()
-
-            null
-        }
-    }
+//    private fun searchFileInDrive(fileName: String, googleDriveService2: Drive): String? {
+//        Looper.prepare()
+//        if (googleDriveService2 == null) {
+//            Log.e("GoogleDrive", "Google Drive Service not initialized")
+//            Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
+//
+//            return null
+//        }
+//
+//        val query = "name = '$fileName' and mimeType != 'application/vnd.google-apps.folder'"
+//
+//        return try {
+//            val result = googleDriveService2.files().list()
+//                .setQ(query)
+//                .setSpaces("drive")
+//                .setFields("files(id, name)")
+//                .execute()
+//
+//            if (!result.files.isNullOrEmpty()) {
+//                if (result != null) {
+//                    Log.d("GoogleDrive", "File found: ${result.files[0].name}")
+//                    Toast.makeText(applicationContext,"GoogleDrive : File found: ${result.files[0].name}",Toast.LENGTH_SHORT).show()
+//
+//                }
+//                result.files.get(0).id // Return the file ID
+//            } else {
+//                Log.e("GoogleDrive", "File not found")
+//                Toast.makeText(applicationContext,"GoogleDrive : File not found",Toast.LENGTH_SHORT).show()
+//
+//                null
+//            }
+//        } catch (e: Exception) {
+//            Log.e("GoogleDrive", "Error searching file: ${e.message}")
+//            Toast.makeText(applicationContext,"GoogleDrive :Error searching file: ${e.message}",Toast.LENGTH_SHORT).show()
+//
+//            null
+//        }
+//    }
 
     private fun downloadFileFromDrive(fileId: String, destinationFile: File, googleDriveService2: Drive,dbName:String) {
         if (googleDriveService2 == null) {
