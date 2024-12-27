@@ -36,11 +36,13 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
+import com.google.api.services.drive.model.FileList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileOutputStream
 
 
 interface TransactionBottomSheetListener {
@@ -346,7 +348,32 @@ private val RC_SIGN_IN = 100
     }
 
 //*****************************************************************
+ private fun getFileIdByName(driveService: Drive, fileName: String): String? {
+    try {
+        // Query Google Drive for the file
+        val query = "name = '$fileName' and trashed = false"
+        val result: FileList = driveService.files().list()
+            .setQ(query)
+            .setSpaces("drive")
+            .setFields("files(id, name)")
+            .execute()
 
+        // Check if any files match the name
+        val files = result.files
+        if (files.isNullOrEmpty()) {
+            Log.d("GoogleDrive", "No files found with the name: $fileName")
+            return null
+        }
+
+        // Return the file ID of the first match
+        return files[0].id.also {
+            Log.d("GoogleDrive", "File found with ID: $it")
+        }
+    } catch (e: Exception) {
+        Log.e("GoogleDrive", "Error retrieving file ID", e)
+    }
+    return null
+}
 
     //Restoring database to internal storage
     private fun searchFileInDrive(fileName: String, googleDriveService2: Drive): String? {
@@ -388,58 +415,80 @@ private val RC_SIGN_IN = 100
         }
     }
 
-    private fun downloadFileFromDrive(fileId: String, destinationFile: File, googleDriveService2: Drive) {
+    private fun downloadFileFromDrive(fileId: String, destinationFile: File, googleDriveService2: Drive,dbName:String) {
         if (googleDriveService2 == null) {
             Log.e("GoogleDrive", "Google Drive Service not initialized")
+            Looper.prepare()
             Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
 
             return
         }
+        val walPath = File(destinationFile.parent, "$dbName-wal")
+        val shmPath = File(destinationFile.parent, "$dbName-shm")
+        AppDatabase.getDatabase(applicationContext).close()
+        // Delete existing database files
+        if (destinationFile.exists()) destinationFile.delete()
+        if (walPath.exists()) walPath.delete()
+        if (shmPath.exists()) shmPath.delete()
 
         Thread {
-            try {
-                val outputStream = destinationFile.outputStream()
-                googleDriveService2.files().get(fileId).executeMediaAndDownloadTo(outputStream)
-                outputStream.flush()
-                outputStream.close()
-                Looper.prepare()
-                Toast.makeText(applicationContext,"GoogleDrive : File downloaded successfully: ${destinationFile.absolutePath}",Toast.LENGTH_SHORT).show()
+            synchronized(lock) {
+                Log.d("Thread", "Inner thread running")
+                try {
+                    val outputStream = FileOutputStream(destinationFile)//destinationFile.outputStream()
+                    googleDriveService2.files().get(fileId).executeMediaAndDownloadTo(outputStream)
+                    outputStream.flush()
+                    outputStream.close()
+                    AppDatabase.getDatabase(applicationContext)
+                    Looper.prepare()
+                    Toast.makeText(applicationContext,"GoogleDrive : File downloaded successfully: ${destinationFile.absolutePath}",Toast.LENGTH_SHORT).show()
 
-                Log.d("GoogleDrive", "File downloaded successfully: ${destinationFile.absolutePath}")
-            } catch (e: Exception) {
-                Log.e("GoogleDrive", "Error downloading file: ${e.message}")
-                Looper.prepare()
-                Toast.makeText(applicationContext,"GoogleDrive :Error downloading file: ${e.message}",Toast.LENGTH_SHORT).show()
+                    Log.d("GoogleDrive", "File downloaded successfully: ${destinationFile.absolutePath}")
+                } catch (e: Exception) {
+                    Log.e("GoogleDrive", "Error downloading file: ${e.message}")
+                    Looper.prepare()
+                    Toast.makeText(applicationContext,"GoogleDrive :Error downloading file: ${e.message}",Toast.LENGTH_SHORT).show()
 
+                }
             }
+
         }.start()
     }
     var fileId: String = ""
+    val lock = Object()
     var status: Boolean=false
     private fun restoreDatabaseFromDrive(googleDriveService2: Drive) {
         val dbName = "expense_manager_db" // Replace with your database name
         val localDbFile = getDbPath(dbName)
 
 Thread{
-     fileId = searchFileInDrive(dbName,googleDriveService2)!!
+    synchronized(lock) {
+        Log.d("Thread", "Outer thread running")
+        fileId = getFileIdByName(googleDriveService2,"expense_manager_db.db").toString()//searchFileInDrive(dbName,googleDriveService2)!!
+        if (fileId != null) {
+
+            downloadFileFromDrive(fileId, localDbFile,googleDriveService2,dbName)
+            Looper.prepare()
+            Toast.makeText(applicationContext,"GoogleDrive :Database restored to internal storage: ${localDbFile.absolutePath}",Toast.LENGTH_SHORT).show()
+            status=true
+            Log.d("GoogleDrive", "Database restored to internal storage: ${localDbFile.absolutePath}")
+
+        } else {
+            status=false
+            Looper.prepare()
+            Toast.makeText(applicationContext,"GoogleDrive : Database file not found in Drive",Toast.LENGTH_SHORT).show()
+
+            Log.e("GoogleDrive", "Database file not found in Drive")
+        }
+
+    }
+
 
 }.start()
-       // val fileId = searchFileInDrive(dbName)
-        Handler().postDelayed({
-            if (fileId != null) {
-                downloadFileFromDrive(fileId, localDbFile,googleDriveService2)
-
-                Toast.makeText(applicationContext,"GoogleDrive :Database restored to internal storage: ${localDbFile.absolutePath}",Toast.LENGTH_SHORT).show()
-status=true
-                Log.d("GoogleDrive", "Database restored to internal storage: ${localDbFile.absolutePath}")
-
-            } else {
-status=false
-                Toast.makeText(applicationContext,"GoogleDrive : Database file not found in Drive",Toast.LENGTH_SHORT).show()
-
-                Log.e("GoogleDrive", "Database file not found in Drive")
-            }
-        }, 2000)
+//       // val fileId = searchFileInDrive(dbName)
+//        Handler().postDelayed({
+//
+//        }, 2000)
 
         if (status)
         {
