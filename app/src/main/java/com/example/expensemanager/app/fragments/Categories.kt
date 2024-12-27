@@ -40,6 +40,7 @@ class Categories : Fragment() {
     private lateinit var listView: ListView
     private lateinit var date : TextView
     private lateinit var inex : TextView
+    private lateinit var view : View
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
@@ -48,7 +49,7 @@ class Categories : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_categories, container, false)
-
+        this.view = view
         pieChart = view.findViewById(R.id.pieChart)
         date = view.findViewById(R.id.date_category)
         inex = view.findViewById(R.id.inex)
@@ -75,6 +76,8 @@ class Categories : Fragment() {
 
 
     private fun loadCategories() {
+
+        
 
         // Use coroutine to fetch data from Room database
         lifecycleScope.launch(Dispatchers.IO) {
@@ -143,6 +146,7 @@ class Categories : Fragment() {
                                 val adapter = CategoryAdapter(requireContext(), categories,totalExpense)
                                 listView.adapter = adapter
                                 setupPieChart(categories,totalExpense)
+                                inex.text = ""
                                 inex.text = "-"+totalExpense.toString()+"\n"+"+"+totalIncome.toString()
 
                             }else{
@@ -162,19 +166,23 @@ class Categories : Fragment() {
                 R.id.action_day -> {
                     showDatePicker { selectedDate ->
                         date.text = formatDate(selectedDate)
+                        pieChart.invalidate()
+                        listView.invalidateViews()
 
                         lifecycleScope.launch(Dispatchers.IO) {
                             var totalExpense = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalExpenseOfTheDate(selectedDate) }
                             val categoryDao = AppDatabase.getDatabase(requireContext()).transactionDao()
-                            val categories = categoryDao.getCategoryData()
+                            val categories = categoryDao.getCategoryForTheDate(selectedDate)
                             var totalIncome = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalIncomeOfTheDate(selectedDate) }
 
                             withContext(Dispatchers.Main) {
                                 if(totalExpense!=null){
-                                    val adapter = CategoryAdapter(requireContext(), categories,totalExpense)
-
+                                    val adapter = listView.adapter as? CategoryAdapter
+                                    adapter?.updateData(categories,totalExpense)
                                     setupPieChart(categories,totalExpense)
+
                                     listView.adapter = adapter
+                                    inex.text = ""
                                     inex.text = "-"+totalExpense.toString()+"\n"+"+"+totalIncome.toString()
 
                                 }else{
@@ -236,8 +244,7 @@ class Categories : Fragment() {
                 var totalExpense = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalExpenseInRange(startDate,endDate) }
                 var totalIncome = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalIncomeInRange(startDate,endDate) }
                 val categoryDao = AppDatabase.getDatabase(requireContext()).transactionDao()
-                val categories = categoryDao.getCategoryData()
-                listView.removeAllViews()
+                val categories = categoryDao.getCategoryDataInRange(startDate,endDate)
                 withContext(Dispatchers.Main) {
                     if(totalExpense!=null){
                         val adapter = CategoryAdapter(requireContext(), categories,totalExpense)
@@ -284,7 +291,8 @@ class Categories : Fragment() {
                 var totalIncome = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalIncomeInRange(startDate,endDate) }
 
                 val categoryDao = AppDatabase.getDatabase(requireContext()).transactionDao()
-                val categories = categoryDao.getCategoryData()
+                val categories = categoryDao.getCategoryDataInRange(startDate,endDate)
+
 
                 withContext(Dispatchers.Main) {
                     if(totalExpense!=null){
@@ -332,7 +340,8 @@ class Categories : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 var totalExpense = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalExpenseInRange(startDate,endDate) }
                 val categoryDao = AppDatabase.getDatabase(requireContext()).transactionDao()
-                val categories = categoryDao.getCategoryData()
+                val categories = categoryDao.getCategoryDataInRange(startDate,endDate)
+
                 var totalIncome = context?.let { AppDatabase.getDatabase(it).transactionDao().getTotalIncomeInRange(startDate,endDate) }
 
                 withContext(Dispatchers.Main) {

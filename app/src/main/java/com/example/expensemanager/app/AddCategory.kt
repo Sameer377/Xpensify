@@ -1,4 +1,6 @@
 package com.example.expensemanager.app
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -7,6 +9,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -59,8 +62,38 @@ class AddCategory : AppCompatActivity() , IconDialog.Callback{
         initUi()
     }
 
+    val colorList = listOf(
+        "#FF5733", "#33FF57", "#5733FF", "#FF33A1", "#33A1FF", "#A1FF33", "#FFD700", "#00FFFF",
+        "#8A2BE2", "#7FFF00", "#FF1493", "#1E90FF", "#FFDAB9", "#00FF7F", "#9400D3", "#DC143C",
+        "#00CED1", "#F4A460", "#556B2F", "#4682B4", "#FF4500", "#2E8B57", "#6A5ACD", "#00BFFF",
+        "#7CFC00", "#FF69B4", "#9932CC", "#FF6347", "#40E0D0", "#EE82EE", "#FFA500", "#ADFF2F",
+        "#FF0000", "#8B4513", "#5F9EA0", "#D2691E", "#6B8E23", "#B22222", "#9ACD32", "#20B2AA",
+        "#6495ED", "#FF00FF", "#32CD32", "#FF8C00", "#BDB76B", "#FF00FF", "#48D1CC", "#C71585",
+        "#4B0082", "#FFD700"
+    )
+
+    fun getNextUniqueColor(context: Context): String {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("ColorPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // Retrieve the last used index, default to -1 if not found
+        val lastIndex = sharedPreferences.getInt("LastColorIndex", -1)
+
+        // Calculate the next index
+        val nextIndex = (lastIndex + 1) % colorList.size
+
+        // Save the new index back to SharedPreferences
+        editor.putInt("LastColorIndex", nextIndex)
+        editor.apply()
+
+        // Return the color at the next index
+        return colorList[nextIndex]
+    }
+
+    private var logo_color : String = "#000000"
+
     private fun initUi() {
-        editTextCategory = findViewById(R.id.category_edit_text)
+        editTextCategory = findViewById<AppCompatEditText>(R.id.category_edit_text)
         buttonAddCategory = findViewById(R.id.create_category_btn)
         selectedicon = findViewById(R.id.selected_icon)
 
@@ -70,7 +103,7 @@ class AddCategory : AppCompatActivity() , IconDialog.Callback{
             if (categoryName.isNotEmpty()) {
                 if (selectedIcons != 0) {
                     // Pass category name and selected icon ID
-                    addCategory(categoryName, selectedIcons)
+                    addCategory(categoryName, selectedIcons,logo_color)
                 } else {
                     Toast.makeText(this, "Please select at least one icon", Toast.LENGTH_SHORT).show()
                 }
@@ -80,12 +113,12 @@ class AddCategory : AppCompatActivity() , IconDialog.Callback{
         }
     }
 
-    private fun addCategory(categoryName: String, icon: Int) {
+    private fun addCategory(categoryName: String, icon: Int,color:String) {
         lifecycleScope.launch(Dispatchers.IO) {
             val categoryDao = AppDatabase.getDatabase(this@AddCategory).categoryDao()
 
             // Insert new category
-            val newCategory = Category(name = categoryName, icon = icon)
+            val newCategory = Category(name = categoryName, icon = icon, color = color)
             categoryDao.insert(newCategory)
 
             // Reload categories
@@ -113,6 +146,8 @@ class AddCategory : AppCompatActivity() , IconDialog.Callback{
             if (drawable != null) {
                 // Set the drawable to the ImageView
                 selectedicon.setImageDrawable(drawable)
+                logo_color = getNextUniqueColor(applicationContext)
+                selectedicon.setColorFilter(Color.parseColor(logo_color ?: "#000000"))
 
                 /*val colorPickerObserver = object : ColorPickerPopup.ColorPickerObserver {
                     override fun onColorSelected(color: Int) {
@@ -139,7 +174,6 @@ class AddCategory : AppCompatActivity() , IconDialog.Callback{
                         Toast.makeText(this, "Selected Color: $hexColor", Toast.LENGTH_SHORT).show()
                     }*/
 
-                Toast.makeText(this, "Icon selected: ${selectedIcons}", Toast.LENGTH_SHORT).show()
             }else {
                 Toast.makeText(this, "Failed to load the selected icon.", Toast.LENGTH_SHORT).show()
             }

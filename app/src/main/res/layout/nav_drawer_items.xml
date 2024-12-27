@@ -11,28 +11,6 @@
         android:padding="8dp"
         android:paddingBottom="30dp"
         >
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/Export"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Export"
-            android:textSize="16sp"
-            android:textColor="@color/primary_dark_black_dark_3"
-            android:textStyle="bold"
-            android:paddingBottom="8dp" />
-
-
-
-        <TextView
-            android:id="@+id/exp_pdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Export to PDF"
-            android:drawableLeft="@drawable/ic_pdf"
-            android:drawablePadding="8dp"
-            android:textColor="@color/primary_dark_black_dark_3"
-            android:padding="8dp" />
 
         <!-- Synchronization Section -->
         <TextView
@@ -46,18 +24,15 @@
             android:textStyle="bold"
             android:paddingBottom="8dp" />
 
-        <CheckBox
-            android:id="@+id/checkbox_dropbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dropbox"
-            android:textColor="@color/primary_dark_black_dark_3"
-            android:buttonTint="@color/primary_dark_black_dark_3" />
 
-        <CheckBox
+        <TextView
+            android:drawableLeft="@drawable/outline_backup_24"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
             android:id="@+id/checkbox_google_drive"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center|left"
             android:text="Google Drive"
             android:textColor="@color/primary_dark_black_dark_3"
             android:buttonTint="@color/primary_dark_black_dark_3"

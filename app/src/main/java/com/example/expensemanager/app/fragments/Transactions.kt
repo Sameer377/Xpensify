@@ -130,7 +130,7 @@ class Transactions : Fragment() {
         when(action_id){
 
             0-> {
-                Toast.makeText(requireContext(),"exe",Toast.LENGTH_SHORT).show()
+                
                 CoroutineScope(Dispatchers.IO).launch {
                     val totalIncome = context?.let { AppDatabase.getDatabase(it).incomeDao().getTotalIncome() }
                     val totalExpense = context?.let { AppDatabase.getDatabase(it).expenseDao().getTotalExpenses() }
@@ -162,7 +162,7 @@ class Transactions : Fragment() {
             }
 
              R.id.action_all -> {
-                Toast.makeText(requireContext(),"exe",Toast.LENGTH_SHORT).show()
+                
                 CoroutineScope(Dispatchers.IO).launch {
                     val totalIncome = context?.let { AppDatabase.getDatabase(it).incomeDao().getTotalIncome() }
                     val totalExpense = context?.let { AppDatabase.getDatabase(it).expenseDao().getTotalExpenses() }
@@ -181,6 +181,12 @@ class Transactions : Fragment() {
                             balanceTv.text = balance.toString()
                         }else{
                             income.text = "0.00"
+                        }
+
+                        if (totalIncome == null && totalExpense == null){
+                            expense.text ="0.00"
+                            income.text = "0.00"
+                            balanceTv.text = "0.00"
                         }
                     }
 
@@ -212,6 +218,12 @@ class Transactions : Fragment() {
                         }else{
                             income.text = "0.00"
                         }
+
+                        if (totalIncome == null && totalExpense == null){
+                            expense.text ="0.00"
+                            income.text = "0.00"
+                            balanceTv.text = "0.00"
+                        }
                     }
 
                 }
@@ -226,7 +238,6 @@ class Transactions : Fragment() {
             }
             R.id.action_week  -> {
 
-                Toast.makeText(requireContext(),"exe2",Toast.LENGTH_SHORT).show()
 
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -249,6 +260,12 @@ class Transactions : Fragment() {
                             balanceTv.text = balance.toString()
                         }else{
                             income.text = "0.00"
+                        }
+
+                        if (totalIncome == null && totalExpense == null){
+                            expense.text ="0.00"
+                            income.text = "0.00"
+                            balanceTv.text = "0.00"
                         }
                     }
 
@@ -442,6 +459,8 @@ class Transactions : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createFinancialSummaryPdf(transactions: List<Transaction>,startDate: String?,endDate: String?,income:String?,expense:String?,balance:String?) {
+
+        checkStoragePermission(requireContext())
         // Ensure the storage directory exists
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
         val fileName = "FinancialSummary.pdf"

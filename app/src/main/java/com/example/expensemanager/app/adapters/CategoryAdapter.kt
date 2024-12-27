@@ -28,8 +28,8 @@ import kotlinx.coroutines.launch
 
 class CategoryAdapter(
     private val context: Context,
-    private val categories: List<CategoryData>,
-    private val totalExpenses:Double
+    private var categories: List<CategoryData>,
+    private var totalExpenses:Double
 ) : BaseAdapter()  {
 
 
@@ -41,6 +41,13 @@ class CategoryAdapter(
     override fun getItem(position: Int): CategoryData = categories[position]
 
     override fun getItemId(position: Int): Long = categories[position].id.toLong()
+
+    fun updateData(newData: List<CategoryData>,am : Double) {
+        this.categories = newData
+        this.totalExpenses = am
+        notifyDataSetChanged()
+    }
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(

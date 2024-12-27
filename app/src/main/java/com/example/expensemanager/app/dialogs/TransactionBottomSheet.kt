@@ -160,6 +160,16 @@ class TransactionBottomSheet : BottomSheetDialogFragment() {
 
     public  fun addIncome(){
 
+        if(sourceedt.text!!.isBlank()){
+            sourceedt.setError("required")
+            return
+        }
+
+        if(amountedt.text!!.isBlank()){
+            amountedt.setError("required")
+            return
+        }
+
         val am : Double? = amountedt.text.toString().trim().toDoubleOrNull()
         val sc = sourceedt.text.toString().trim()
         val income = am?.let {
@@ -184,6 +194,7 @@ class TransactionBottomSheet : BottomSheetDialogFragment() {
                     // Show success message on the main thread
                     CoroutineScope(Dispatchers.Main).launch {
                         Toast.makeText(context, "Income added successfully", Toast.LENGTH_SHORT).show()
+                        dismiss()
                     }
                 } catch (e: Exception) {
                     // Handle error if insertion fails
@@ -201,6 +212,11 @@ class TransactionBottomSheet : BottomSheetDialogFragment() {
 
  public  fun addExpense(){
 
+     if(amountedt.text!!.isBlank()){
+         amountedt.setError("required")
+         return
+     }
+     
         if(category_id==0){
             Toast.makeText(context,"Select Category",Toast.LENGTH_SHORT).show()
             return
@@ -231,6 +247,7 @@ class TransactionBottomSheet : BottomSheetDialogFragment() {
                     // Show success message on the main thread
                     CoroutineScope(Dispatchers.Main).launch {
                         Toast.makeText(context, "Income added successfully", Toast.LENGTH_SHORT).show()
+                        dismiss()
                     }
                 } catch (e: Exception) {
                     // Handle error if insertion fails

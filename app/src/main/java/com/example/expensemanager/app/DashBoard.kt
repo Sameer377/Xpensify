@@ -2,15 +2,15 @@ package com.example.expensemanager.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.ContactsContract.Directory.PACKAGE_NAME
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -18,35 +18,29 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.expensemanager.app.database.AppDatabase
-import com.example.expensemanager.app.database.Category
 import com.example.expensemanager.app.dialogs.TransactionBottomSheet
 import com.example.expensemanager.app.fragments.Categories
 import com.example.expensemanager.app.fragments.Transactions
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.http.FileContent
+import com.google.api.client.http.javanet.NetHttpTransport
+import com.google.api.client.json.gson.GsonFactory
+import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.RequestConfiguration
-import kotlin.math.log
-
-
-
-
-
-
-
+import java.io.File
 
 
 interface TransactionBottomSheetListener {
@@ -64,7 +58,7 @@ class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
     private lateinit var floatingActionButton:  FloatingActionButton
 
     private  var adflag : Int = 0
-
+    private var TAG: String="UPLOAD"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -80,7 +74,20 @@ class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
 
         initUi()
         initListener()
+
+        findViewById<TextView>(R.id.checkbox_google_drive).setOnClickListener {
+            TAG="UPLOAD";
+            signIn()
+        }
+        findViewById<TextView>(R.id.nav_backup_restore).setOnClickListener {
+            TAG="RESTORE";
+            signIn() }
     }
+
+
+
+
+
 
     private fun initUi() {
         adflag = 0
@@ -96,24 +103,24 @@ class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
 
     private fun initCategories() {
         AppDatabase.getDatabase(this)
-        fetchAndDisplayCategories()
+//        fetchAndDisplayCategories()
     }
 
-    private fun fetchAndDisplayCategories() {
+   /* private fun fetchAndDisplayCategories() {
         // Launch a coroutine on the IO thread to fetch data
         CoroutineScope(Dispatchers.IO).launch {
             val categoryDao = AppDatabase.getDatabase(baseContext ).categoryDao()
             val categories = categoryDao.getAllCategories()
 
-            // Prepare the data to show in the Toast
-            val categoryNames = categories.joinToString { it.name }
-
-            // Switch to the main thread to show the Toast
-            withContext(Dispatchers.Main) {
-                Toast.makeText(baseContext, "Categories: $categoryNames", Toast.LENGTH_LONG).show()
-            }
+//            // Prepare the data to show in the Toast
+//            val categoryNames = categories.joinToString { it.name }
+//
+//            // Switch to the main thread to show the Toast
+//            withContext(Dispatchers.Main) {
+//                Toast.makeText(baseContext, "Categories: $categoryNames", Toast.LENGTH_LONG).show()
+//            }
         }
-    }
+    }*/
 
 
     private fun initListener() {
@@ -222,50 +229,234 @@ class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
         fragmentTransaction.commit()
     }
 
-    /*public fun showAds() {
-        val adRequest = AdRequest.Builder().build()
-        var mInterstitialAd: InterstitialAd? = null
-
-        InterstitialAd.load(
-            this,
-            "ca-app-pub-9253311157837179/1114277327",
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
-                    println("Ad successfully loaded!")
-
-                    mInterstitialAd?.show(this@DashBoard)
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    println("Ad failed to load: ${error.message}")
-                }
-            }
-        )
-
-        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                println("Ad dismissed.")
-                mInterstitialAd = null
-            }
-
-            override fun onAdFailedToShowFullScreenContent(error: AdError) {
-                println("Ad failed to show: ${error.message}")
-                mInterstitialAd = null
-            }
-        }
-    }*/
 
     private fun getRewardedCoin(totalRewardedAmount: Int){
-        Toast.makeText(this@DashBoard,"Total Rewarded Coins: $totalRewardedAmount Coins",Toast.LENGTH_LONG).show()
     }
 
     override fun onBottomSheetClosed() {
         changeToTransactions()
-        Toast.makeText(this, "BottomSheet Closed", Toast.LENGTH_SHORT).show()
         // Add your logic here
     }
 
+//Google Drive API Code implementation
+    //***************************************
+private val RC_SIGN_IN = 100
+    private var googleDriveService: Drive? = null
+    private fun signIn() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
+            .requestEmail()
+            .build()
+
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, 100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+
+        }
+    }
+
+    private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
+        try {
+            val account = task.getResult(ApiException::class.java)!!
+            val credential = GoogleAccountCredential.usingOAuth2(
+                this, listOf(DriveScopes.DRIVE_FILE)
+            )
+            credential.selectedAccount = account.account
+            googleDriveService = Drive.Builder(
+                NetHttpTransport(),
+                GsonFactory.getDefaultInstance(),
+                credential
+            ).setApplicationName("Xpensify").build()
+
+            when(TAG){
+                "UPLOAD" ->{
+                    val googleDriveService1 = googleDriveService
+                    if (googleDriveService1 != null) {
+                        uploadDatabaseToDrive(googleDriveService1)
+                    }
+                }
+                "RESTORE" ->{
+                    val googleDriveService2 = googleDriveService
+                    if (googleDriveService2 != null) {
+                        restoreDatabaseFromDrive(googleDriveService2)
+                    }
+
+                }
+            }
+        } catch (e: ApiException) {
+            Log.e("SignInError", "Error signing in: ${e.statusCode}")
+            Toast.makeText(applicationContext,"SignInError : Error signing in: ${e.statusCode}",Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+    private fun getDatabaseFile(): File {
+        val DATABASE_NAME = "expense_manager_db"
+        val PACKAGE_NAME = "com.example.expensemanager.app"
+        val DATABASE_PATH = "/data/data/" + PACKAGE_NAME + "/databases/" + DATABASE_NAME
+        val dbName = "expense_manager_db" // Replace with your Room database name
+        return File(DATABASE_PATH)
+    }
+
+    private fun uploadDatabaseToDrive( googleDriveService:Drive) {
+        if (googleDriveService == null) {
+            Log.e("GoogleDrive", "Google Drive Service not initialized")
+            Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val dbFile = getDatabaseFile()
+        AppDatabase.getDatabase(applicationContext).close()
+        if (!dbFile.exists()) {
+            Log.e("GoogleDrive", "Database file does not exist")
+            Toast.makeText(applicationContext,"GoogleDrive : Database file does not exist",Toast.LENGTH_SHORT).show()
+
+            return
+        }
+
+        val fileMetadata = com.google.api.services.drive.model.File()
+        fileMetadata.name = "expense_manager_db.db"
+
+        val fileContent = FileContent("application/vnd.sqlite3", dbFile)
+
+        Thread {
+            try {
+                val file = googleDriveService.files().create(fileMetadata, fileContent)
+                    .setFields("id")
+                    .execute()
+                Log.d("GoogleDrive", "Database uploaded with ID: ${file?.id}")
+                Looper.prepare()
+                Toast.makeText(applicationContext,"GoogleDrive : Database uploaded with ID: ${file?.id}",Toast.LENGTH_SHORT).show()
+
+            } catch (e: Exception) {
+                Log.e("GoogleDrive", "Error uploading database: ${e.message}")
+                Looper.prepare()
+                Toast.makeText(applicationContext,"GoogleDrive : Error uploading database: ${e.message}",Toast.LENGTH_SHORT).show()
+
+            }
+            AppDatabase.getDatabase(applicationContext)
+        }.start()
+    }
+
+//*****************************************************************
+
+
+    //Restoring database to internal storage
+    private fun searchFileInDrive(fileName: String, googleDriveService2: Drive): String? {
+        Looper.prepare()
+        if (googleDriveService2 == null) {
+            Log.e("GoogleDrive", "Google Drive Service not initialized")
+            Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
+
+            return null
+        }
+
+        val query = "name = '$fileName' and mimeType != 'application/vnd.google-apps.folder'"
+
+        return try {
+            val result = googleDriveService2.files().list()
+                .setQ(query)
+                .setSpaces("drive")
+                .setFields("files(id, name)")
+                .execute()
+
+            if (!result.files.isNullOrEmpty()) {
+                if (result != null) {
+                    Log.d("GoogleDrive", "File found: ${result.files[0].name}")
+                    Toast.makeText(applicationContext,"GoogleDrive : File found: ${result.files[0].name}",Toast.LENGTH_SHORT).show()
+
+                }
+                result.files.get(0).id // Return the file ID
+            } else {
+                Log.e("GoogleDrive", "File not found")
+                Toast.makeText(applicationContext,"GoogleDrive : File not found",Toast.LENGTH_SHORT).show()
+
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("GoogleDrive", "Error searching file: ${e.message}")
+            Toast.makeText(applicationContext,"GoogleDrive :Error searching file: ${e.message}",Toast.LENGTH_SHORT).show()
+
+            null
+        }
+    }
+
+    private fun downloadFileFromDrive(fileId: String, destinationFile: File, googleDriveService2: Drive) {
+        if (googleDriveService2 == null) {
+            Log.e("GoogleDrive", "Google Drive Service not initialized")
+            Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
+
+            return
+        }
+
+        Thread {
+            try {
+                val outputStream = destinationFile.outputStream()
+                googleDriveService2.files().get(fileId).executeMediaAndDownloadTo(outputStream)
+                outputStream.flush()
+                outputStream.close()
+                Looper.prepare()
+                Toast.makeText(applicationContext,"GoogleDrive : File downloaded successfully: ${destinationFile.absolutePath}",Toast.LENGTH_SHORT).show()
+
+                Log.d("GoogleDrive", "File downloaded successfully: ${destinationFile.absolutePath}")
+            } catch (e: Exception) {
+                Log.e("GoogleDrive", "Error downloading file: ${e.message}")
+                Looper.prepare()
+                Toast.makeText(applicationContext,"GoogleDrive :Error downloading file: ${e.message}",Toast.LENGTH_SHORT).show()
+
+            }
+        }.start()
+    }
+    var fileId: String = ""
+    var status: Boolean=false
+    private fun restoreDatabaseFromDrive(googleDriveService2: Drive) {
+        val dbName = "expense_manager_db" // Replace with your database name
+        val localDbFile = getDbPath(dbName)
+
+Thread{
+     fileId = searchFileInDrive(dbName,googleDriveService2)!!
+
+}.start()
+       // val fileId = searchFileInDrive(dbName)
+        Handler().postDelayed({
+            if (fileId != null) {
+                downloadFileFromDrive(fileId, localDbFile,googleDriveService2)
+
+                Toast.makeText(applicationContext,"GoogleDrive :Database restored to internal storage: ${localDbFile.absolutePath}",Toast.LENGTH_SHORT).show()
+status=true
+                Log.d("GoogleDrive", "Database restored to internal storage: ${localDbFile.absolutePath}")
+
+            } else {
+status=false
+                Toast.makeText(applicationContext,"GoogleDrive : Database file not found in Drive",Toast.LENGTH_SHORT).show()
+
+                Log.e("GoogleDrive", "Database file not found in Drive")
+            }
+        }, 2000)
+
+        if (status)
+        {
+            val intent = getIntent()
+            finish()
+            startActivity(intent)
+        }
+
+    }
+    private fun getDbPath(dbName: String): File {
+        val DATABASE_NAME = "expense_manager_db"
+        val PACKAGE_NAME = "com.example.expensemanager.app"
+        val DATABASE_PATH = "/data/data/" + PACKAGE_NAME + "/databases/" + DATABASE_NAME
+
+        val dbPath = File(applicationContext.filesDir, "databases/expense_manager_db").absolutePath
+        Log.d("DatabasePath", "Database path: $dbPath")
+        return File(DATABASE_PATH)
+    }
 
 }

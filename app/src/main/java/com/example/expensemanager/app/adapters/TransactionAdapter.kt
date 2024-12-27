@@ -38,7 +38,7 @@ class TransactionAdapter(private val context: Context, private var transactions:
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
-        holder.amountText.text = transaction.amount.toString()
+
         holder.sourceOrCategoryText.text = transaction.sourceOrCategory
         holder.dateText.text = "${transaction.date} ${transaction.time.substring(0,5)}"
 
@@ -65,8 +65,13 @@ class TransactionAdapter(private val context: Context, private var transactions:
 
         if (transaction.type == "Expense") {
             holder.iconImageView.setColorFilter(Color.parseColor(transaction.categoryColor ?: "#000000"))
+            holder.amountText.text = "-"+transaction.amount.toString()
             holder.amountText.setTextColor(ContextCompat.getColor(context, R.color.expense_amount))
         } else {
+
+            holder.iconImageView.setImageResource(R.drawable.salary_rupee)
+            holder.iconImageView.setColorFilter(Color.parseColor(transaction.categoryColor ?: "#59954D"))
+            holder.amountText.text = "+"+transaction.amount.toString()
             holder.amountText.setTextColor(ContextCompat.getColor(context, R.color.income_ammount))
         }
     }

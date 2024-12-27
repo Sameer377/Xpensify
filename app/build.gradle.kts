@@ -34,6 +34,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 
@@ -74,5 +79,11 @@ dependencies {
     implementation("com.itextpdf:itext7-core:7.2.3")
 
     implementation("com.github.duanhong169:colorpicker:1.1.6")
+
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.api-client:google-api-client-android:1.33.2")
+    implementation("com.google.apis:google-api-services-drive:v3-rev136-1.25.0")
+    implementation("com.google.api-client:google-api-client-gson:1.33.2")
+
 
 }

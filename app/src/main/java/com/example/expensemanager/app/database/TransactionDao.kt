@@ -134,7 +134,39 @@ interface TransactionDao {
     SELECT SUM(amount) FROM income_table
     """)
     suspend fun getTotalIncome(): Double?
+
+    @Query("""
+    SELECT 
+        categories.id AS id, 
+        SUM(expenses.amount) AS amount, 
+        categories.id AS category_id, 
+        categories.name AS category_name, 
+        categories.icon AS categoryIcon, 
+        categories.color AS categoryColor 
+    FROM expenses
+    INNER JOIN categories ON expenses.category_id = categories.id
+    WHERE expenses.date BETWEEN :startDate AND :endDate
+    GROUP BY categories.id, categories.name, categories.icon, categories.color
+    """)
+    suspend fun getCategoryDataInRange(startDate: String, endDate: String): List<CategoryData>
+
+    @Query("""
+    SELECT 
+        categories.id AS id, 
+        SUM(expenses.amount) AS amount, 
+        categories.id AS category_id, 
+        categories.name AS category_name, 
+        categories.icon AS categoryIcon, 
+        categories.color AS categoryColor 
+    FROM expenses
+    INNER JOIN categories ON expenses.category_id = categories.id
+    WHERE expenses.date = :specificDate
+    GROUP BY categories.id, categories.name, categories.icon, categories.color
+    """)
+    suspend fun getCategoryForTheDate(specificDate: String): List<CategoryData>
+
 }
+
 
 // Data class for getCategoryData result
 

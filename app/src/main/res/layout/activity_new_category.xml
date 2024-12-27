@@ -61,7 +61,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="#F2C7C7"
+            app:cardBackgroundColor="#E9EBE9"
             android:id="@+id/icon_btn"
             >
             <ImageView
@@ -73,18 +73,14 @@
                 />
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edt_layout"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Category Name"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/primary_dark_black_dark_1"
-            app:hintTextColor="@color/primary_dark_black_dark_1">
 
-            <com.google.android.material.textfield.TextInputEditText
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_marginRight="10dp"
+                android:hint="category name"
+                android:layout_gravity="bottom"
                 android:id="@+id/category_edit_text"
+                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -92,7 +88,7 @@
                 android:textColorHint="@color/primary_dark_black_dark_1"
                 android:padding="10dp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 

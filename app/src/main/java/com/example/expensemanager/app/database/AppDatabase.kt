@@ -48,9 +48,9 @@ abstract class AppDatabase : RoomDatabase() {
                 getDatabase(context).categoryDao().insertCategories(defaultCategories)
 
 //                // Insert default income
-                getDatabase(context).incomeDao().insertIncome(defaultIncome)
+           /*     getDatabase(context).incomeDao().insertIncome(defaultIncome)
                 getDatabase(context).expenseDao().insertExpense(defaultExpense)
-
+*/
             }
         }
     }
