@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
@@ -17,7 +18,9 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.expensemanager.app.database.AppDatabase
+import com.example.expensemanager.app.database.TransactionViewModel
 import com.example.expensemanager.app.dialogs.TransactionBottomSheet
 import com.example.expensemanager.app.fragments.Categories
 import com.example.expensemanager.app.fragments.Transactions
@@ -58,6 +61,7 @@ class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
     private lateinit var categories: AppCompatButton
     private lateinit var transaction: AppCompatButton
     private lateinit var floatingActionButton:  FloatingActionButton
+    private lateinit var viewModel: TransactionViewModel
 
     private  var adflag : Int = 0
     private var TAG: String="UPLOAD"
@@ -84,6 +88,16 @@ class DashBoard : AppCompatActivity() ,TransactionBottomSheetListener  {
         findViewById<TextView>(R.id.nav_backup_restore).setOnClickListener {
             TAG="RESTORE";
             signIn() }
+
+        findViewById<TextView>(R.id.nav_backup_clear).setOnClickListener {
+
+            showConfirmationDialog()
+        }
+
+
+
+
+
     }
 
 
@@ -375,46 +389,6 @@ private val RC_SIGN_IN = 100
     return null
 }
 
-    //Restoring database to internal storage
-//    private fun searchFileInDrive(fileName: String, googleDriveService2: Drive): String? {
-//        Looper.prepare()
-//        if (googleDriveService2 == null) {
-//            Log.e("GoogleDrive", "Google Drive Service not initialized")
-//            Toast.makeText(applicationContext,"GoogleDrive : Google Drive Service not initialized",Toast.LENGTH_SHORT).show()
-//
-//            return null
-//        }
-//
-//        val query = "name = '$fileName' and mimeType != 'application/vnd.google-apps.folder'"
-//
-//        return try {
-//            val result = googleDriveService2.files().list()
-//                .setQ(query)
-//                .setSpaces("drive")
-//                .setFields("files(id, name)")
-//                .execute()
-//
-//            if (!result.files.isNullOrEmpty()) {
-//                if (result != null) {
-//                    Log.d("GoogleDrive", "File found: ${result.files[0].name}")
-//                    Toast.makeText(applicationContext,"GoogleDrive : File found: ${result.files[0].name}",Toast.LENGTH_SHORT).show()
-//
-//                }
-//                result.files.get(0).id // Return the file ID
-//            } else {
-//                Log.e("GoogleDrive", "File not found")
-//                Toast.makeText(applicationContext,"GoogleDrive : File not found",Toast.LENGTH_SHORT).show()
-//
-//                null
-//            }
-//        } catch (e: Exception) {
-//            Log.e("GoogleDrive", "Error searching file: ${e.message}")
-//            Toast.makeText(applicationContext,"GoogleDrive :Error searching file: ${e.message}",Toast.LENGTH_SHORT).show()
-//
-//            null
-//        }
-//    }
-
     private fun downloadFileFromDrive(fileId: String, destinationFile: File, googleDriveService2: Drive,dbName:String) {
         if (googleDriveService2 == null) {
             Log.e("GoogleDrive", "Google Drive Service not initialized")
@@ -470,6 +444,9 @@ Thread{
             downloadFileFromDrive(fileId, localDbFile,googleDriveService2,dbName)
             Looper.prepare()
             Toast.makeText(applicationContext,"GoogleDrive :Database restored to internal storage: ${localDbFile.absolutePath}",Toast.LENGTH_SHORT).show()
+          /*  val intent = Intent(this@DashBoard,DashBoard::class.java)
+            finish()
+            startActivity(intent)*/
             status=true
             Log.d("GoogleDrive", "Database restored to internal storage: ${localDbFile.absolutePath}")
 
@@ -507,5 +484,37 @@ Thread{
         Log.d("DatabasePath", "Database path: $dbPath")
         return File(DATABASE_PATH)
     }
+
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Are you sure?")
+        builder.setMessage("Do you want to proceed with this action?")
+
+        // "Yes" button
+        builder.setPositiveButton("Yes") { dialog, which ->
+            // Perform the action when the user clicks "Yes"
+            viewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+
+            viewModel.clearAllData()
+            Toast.makeText(this, "Action confirmed!", Toast.LENGTH_SHORT).show()
+            val intent = intent
+            finish()
+            startActivity(intent)
+        }
+
+        // "No" button
+        builder.setNegativeButton("No") { dialog, which ->
+            Toast.makeText(this, "Action canceled.", Toast.LENGTH_SHORT).show()
+        }
+
+        builder.setNeutralButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
 }

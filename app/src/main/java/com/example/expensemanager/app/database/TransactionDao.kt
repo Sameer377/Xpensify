@@ -165,6 +165,16 @@ interface TransactionDao {
     """)
     suspend fun getCategoryForTheDate(specificDate: String): List<CategoryData>
 
+
+    @Query("DELETE FROM categories")
+    suspend fun clearCategory()
+
+    @Query("DELETE FROM income_table")
+    suspend fun clearIncome()
+
+    @Query("DELETE FROM expenses")
+    suspend fun clearExpense()
+
 }
 
 

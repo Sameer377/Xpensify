@@ -13,4 +13,10 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
     suspend fun getTransactionsInRange(startDate:String,endDate:String): List<Transaction> {
         return transactionDao.getTransactionsInRange(startDate,endDate)
     }
+
+    suspend fun clearAllTables() {
+        transactionDao.clearIncome()
+        transactionDao.clearExpense()
+        // You can call clearTable() for other tables as needed
+    }
 }

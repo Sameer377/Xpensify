@@ -41,4 +41,10 @@ class TransactionViewModel(application: Application):AndroidViewModel(applicatio
             _transactions.postValue(data)
         }
     }
+
+    fun clearAllData() {
+        viewModelScope.launch {
+            repository.clearAllTables()
+        }
+    }
 }
