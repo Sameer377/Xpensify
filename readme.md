@@ -24,8 +24,6 @@ Xpensify is a smart financial tracker Android application that helps users manag
 - **Google Drive Integration:**  
   Backup and restore your database to/from Google Drive.
 
-- **Rewarded Ads:**  
-  Earn coins by watching ads.
 
 ---
 
@@ -89,7 +87,7 @@ Below is a gallery of Xpensify app screens. Each screenshot is labeled for clari
     <td align="center"><img src="screenshots/icon.jpeg" width="200"/><br/>Rewarded Ads</td>
   </tr>
   <tr>
-    <td align="center"><img src="screenshots/sidedrawer.jpeg.png" width="200"/><br/>Categories</td>
+    <td align="center"><img src="screenshots/sidedrawer.jpeg" width="200"/><br/>Categories</td>
     <td align="center"><img src="screenshots/newcategory.jpeg" width="200"/><br/>Summary</td>
     <td align="center"><img src="screenshots/categories.jpeg" width="200"/><br/>Pie Chart</td>
   </tr>
